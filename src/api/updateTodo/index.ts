@@ -5,6 +5,9 @@ import { getTodo } from 'api/getTodo'
 import { TodoBody } from 'types/todos.type'
 import { TodoStatus } from 'enums/todos.enum'
 
+import url from 'helper/url'
+
+
 export const updateTodo = async (id: string, ): Promise<void> => {
   try {
     const getTodoRes = await getTodo(id)
@@ -22,7 +25,7 @@ export const updateTodo = async (id: string, ): Promise<void> => {
         
       axios({
         method: 'PUT',
-        url: `http://localhost:8080/api/update-todo/${id}`,
+        url: `${url}/update-todo/${id}`,
         data: body
       })
     }
