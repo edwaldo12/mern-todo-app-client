@@ -25,7 +25,7 @@ export const updateTodo = async (id: string, ): Promise<void> => {
         
       axios({
         method: 'PUT',
-        url: `${url}/update-todo/${id}`,
+        url: `${url}/api/update-todo/${id}`,
         data: body
       })
     }
