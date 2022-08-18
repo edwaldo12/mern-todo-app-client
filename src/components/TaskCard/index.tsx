@@ -6,10 +6,12 @@ import { deleteTodo } from "api/deleteTodo";
 import { updateTodo } from "api/updateTodo";
 
 import DeleteModal from "components/DeleteModal";
+import EditButton from "components/EditButton";
 
 import TrashIcon from "assets/svg/trash";
 import ChecklistIcon from "assets/svg/checklist";
 import ClockIcon from "assets/svg/clock";
+import EditForm from "components/EditForm";
 
 type Props = {
   taskId: string;
@@ -19,6 +21,7 @@ type Props = {
 
 const TaskCard: React.FC<Props> = ({ title, taskId, status }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
   const cache = useQueryCache();
 
   const [removeTodo] = useMutation(deleteTodo, {
@@ -41,6 +44,12 @@ const TaskCard: React.FC<Props> = ({ title, taskId, status }) => {
 
     if (type === "cancel") {
       setShowDeleteModal(false);
+    }
+  };
+
+  const handleEditTodo = (type: "cancel") => {
+    if (type === "cancel") {
+      setShowEditForm(false);
     }
   };
 
@@ -87,11 +96,15 @@ const TaskCard: React.FC<Props> = ({ title, taskId, status }) => {
     "text-red-600": status === "uncompleted",
   });
 
+  const editStyle = classnames("w-5 h-5 mr-5", {});
+
   return (
     <div className={containerClass}>
       <p className={titleClass}>{title}</p>
-
       <div className="flex text-darkPurple">
+        <span className={editStyle}>
+          <EditButton onClickHandler={() => setShowEditForm(true)} />
+        </span>
         <span>
           {isLoading ? (
             <ClockIcon />
@@ -111,6 +124,12 @@ const TaskCard: React.FC<Props> = ({ title, taskId, status }) => {
         taskStatus={status}
         onDelete={() => handleRemoveTodo("delete")}
         onCancel={() => handleRemoveTodo("cancel")}
+      />
+      <EditForm
+        id={taskId}
+        inProp={showEditForm}
+        lastTitle={title}
+        onCancel={() => handleEditTodo("cancel")}
       />
     </div>
   );
